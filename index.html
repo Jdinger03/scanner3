@@ -11,11 +11,15 @@
     <h1>Student ID Scanner</h1>
     <div class="buttons">
         <button id="uploadCSVButton">Upload CSV File</button>
-        <button id="startScanButton">Start Scanning</button>
+        <button id="startScanButton" disabled>Start Scanning</button>
     </div>
     <input type="file" id="csvFileInput" accept=".csv" style="display: none;">
+    <div id="acceptedOutputs" style="display: none;">
+        <h2>Accepted Outputs</h2>
+        <ul id="acceptedList"></ul>
+    </div>
     <div id="cameraContainer">
-        <video id="cameraFeed" autoplay></video>
+        <video id="cameraFeed" autoplay playsinline></video>
     </div>
     <div id="output"></div>
 
