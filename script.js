@@ -61,33 +61,40 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // Function to initialize QuaggaJS for barcode scanning
-    function initializeBarcodeScanner() {
-        Quagga.init({
-            inputStream: {
-                name: "Live",
-                type: "LiveStream",
-                target: cameraFeed,
-                constraints: {
-                    facingMode: "environment",
+function initializeBarcodeScanner() {
+    Quagga.init({
+        inputStream: {
+            name: "Live",
+            type: "LiveStream",
+            target: cameraFeed,
+            constraints: {
+                facingMode: "environment",
+                width: { min: 640 },
+                height: { min: 480 },
+            },
+        },
+        decoder: {
+            readers: [
+                {
+                    format: "code_39_reader",
+                    config: {},
                 },
-            },
-            decoder: {
-                readers: ["code_39_reader"],
-            },
-        }, function(err) {
-            if (err) {
-                console.error("Error initializing QuaggaJS:", err);
-                return;
-            }
-            Quagga.start();
-        });
+            ],
+        },
+    }, function(err) {
+        if (err) {
+            console.error("Error initializing QuaggaJS:", err);
+            return;
+        }
+        Quagga.start();
+    });
 
-        Quagga.onDetected((data) => {
-            const studentNumber = data.codeResult.code;
-            Quagga.stop();
-            processStudentID(studentNumber);
-        });
-    }
+    Quagga.onDetected((data) => {
+        const studentNumber = data.codeResult.code;
+        Quagga.stop();
+        processStudentID(studentNumber);
+    });
+}
 
     // Event listener for clicking the "Start Scanning" button
     startScanButton.addEventListener("click", () => {
