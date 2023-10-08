@@ -5,6 +5,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const cameraContainer = document.getElementById("cameraContainer");
     const cameraFeed = document.getElementById("cameraFeed");
     const outputDiv = document.getElementById("output");
+    const acceptedOutputsDiv = document.getElementById("acceptedOutputs");
+    const acceptedList = document.getElementById("acceptedList");
 
     let acceptedOutputs = [];
 
@@ -21,29 +23,32 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // Event listener for clicking the "Start Scanning" button
-    startScanButton.addEventListener("click", () => {
-        initializeBarcodeScanner();
-    });
-
     // Function to parse the uploaded CSV file
     function parseCSVFile(file) {
         const reader = new FileReader();
         reader.onload = (event) => {
             const contents = event.target.result;
             acceptedOutputs = contents.split("\n").map((line) => line.trim());
+            displayAcceptedOutputs();
         };
         reader.readAsText(file);
     }
 
-    // Function to process the scanned student ID
-    function processStudentID(studentNumber) {
-        if (acceptedOutputs.includes(studentNumber)) {
-            outputDiv.textContent = `Accepted Student ID: ${studentNumber}`;
+    // Function to display the accepted outputs
+    function displayAcceptedOutputs() {
+        if (acceptedOutputs.length > 0) {
+            acceptedList.innerHTML = acceptedOutputs.map((output) => `<li>${output}</li>`).join("");
+            acceptedOutputsDiv.style.display = "block";
+            startScanButton.removeAttribute("disabled");
         } else {
-            outputDiv.textContent = `Rejected Student ID: ${studentNumber}`;
+            acceptedOutputsDiv.style.display = "none";
         }
     }
+
+    // Event listener for clicking the "Start Scanning" button
+    startScanButton.addEventListener("click", () => {
+        initializeBarcodeScanner();
+    });
 
     // Function to initialize QuaggaJS for barcode scanning
     function initializeBarcodeScanner() {
