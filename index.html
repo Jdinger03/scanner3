@@ -2,31 +2,37 @@
 <html>
 <head>
   <title>Barcode Scanner</title>
-  <style>
-    body {
-      font-family: sans-serif;
-    }
-
-    #barcode-scanner {
-      width: 500px;
-      height: 500px;
-      border: 1px solid black;
-    }
-
-    #barcode-data {
-      margin-top: 20px;
-    }
-  </style>
 </head>
 <body>
   <h1>Barcode Scanner</h1>
 
-  <div id="barcode-scanner"></div>
+  <button id="scan-button">Scan Barcode</button>
 
-  <div id="barcode-data"></div>
+  <div id="scanner"></div>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode-generator.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/barcode-reader/0.14.0/barcode-reader.min.js"></script>
-  <script src="script.js"></script>
+  <div id="feedback"></div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.4.1/html5-qrcode.min.js"></script>
+  <script>
+    var scanner = new Html5QrcodeScanner(
+      "scanner",
+      {
+        fps: 2,
+        qrbox: 250,
+      }
+    );
+
+    document.getElementById("scan-button").addEventListener("click", function() {
+      scanner.render(onScanSuccess);
+    });
+
+    function onScanSuccess(decodedResult) {
+      document.getElementById("feedback").innerHTML = `Barcode scanned: ${decodedResult}`;
+    }
+
+    scanner.addEventListener("ready", function() {
+      document.getElementById("feedback").innerHTML = "Scanner is ready.";
+    });
+  </script>
 </body>
 </html>
