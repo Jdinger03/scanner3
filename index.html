@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Barcode Scanner</title>
+  <style>
+    body {
+      font-family: sans-serif;
+    }
+
+    #barcode-scanner {
+      width: 500px;
+      height: 500px;
+      border: 1px solid black;
+    }
+
+    #barcode-data {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Barcode Scanner</h1>
+
+  <div id="barcode-scanner"></div>
+
+  <div id="barcode-data"></div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode-generator.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/barcode-reader/0.14.0/barcode-reader.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
