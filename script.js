@@ -7,6 +7,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const outputDiv = document.getElementById("output");
     const acceptedOutputsDiv = document.getElementById("acceptedOutputs");
     const acceptedList = document.getElementById("acceptedList");
+    const canvas = document.getElementById("canvas");
+    const popup = document.getElementById("popup");
+    const popupClose = document.getElementById("popupClose");
+    const popupMessage = document.getElementById("popupMessage");
 
     let acceptedOutputs = [];
 
@@ -45,9 +49,15 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // Event listener for clicking the "Start Scanning" button
-    startScanButton.addEventListener("click", () => {
-        initializeBarcodeScanner();
+    // Function to show a popup with a message
+    function showPopup(message) {
+        popupMessage.textContent = message;
+        popup.style.display = "block";
+    }
+
+    // Event listener for closing the popup
+    popupClose.addEventListener("click", () => {
+        popup.style.display = "none";
     });
 
     // Function to initialize QuaggaJS for barcode scanning
@@ -78,4 +88,9 @@ document.addEventListener("DOMContentLoaded", () => {
             processStudentID(studentNumber);
         });
     }
+
+    // Event listener for clicking the "Start Scanning" button
+    startScanButton.addEventListener("click", () => {
+        initializeBarcodeScanner();
+    });
 });
