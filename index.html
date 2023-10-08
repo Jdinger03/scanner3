@@ -20,8 +20,16 @@
     </div>
     <div id="cameraContainer">
         <video id="cameraFeed" autoplay playsinline></video>
+        <canvas id="canvas" style="display: none;"></canvas>
     </div>
     <div id="output"></div>
+
+    <div id="popup" class="popup">
+        <div class="popup-content">
+            <span class="popup-close" id="popupClose">&times;</span>
+            <p id="popupMessage"></p>
+        </div>
+    </div>
 
     <script src="script.js"></script>
 </body>
