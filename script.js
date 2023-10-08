@@ -13,6 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const popupMessage = document.getElementById("popupMessage");
 
     let acceptedOutputs = [];
+    let scannerStarted = false;
 
     // Event listener for clicking the "Upload CSV File" button
     uploadCSVButton.addEventListener("click", () => {
@@ -62,35 +63,50 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Function to initialize QuaggaJS for barcode scanning
     function initializeBarcodeScanner() {
-        Quagga.init({
-            inputStream: {
-                name: "Live",
-                type: "LiveStream",
-                target: cameraFeed,
-                constraints: {
-                    facingMode: "environment",
+        if (!scannerStarted) {
+            Quagga.init({
+                inputStream: {
+                    name: "Live",
+                    type: "LiveStream",
+                    target: cameraFeed,
+                    constraints: {
+                        facingMode: "environment",
+                    },
                 },
-            },
-            decoder: {
-                readers: ["code_39_reader"],
-            },
-        }, function(err) {
-            if (err) {
-                console.error("Error initializing QuaggaJS:", err);
-                return;
-            }
-            Quagga.start();
-        });
+                decoder: {
+                    readers: ["code_39_reader"],
+                },
+            }, function(err) {
+                if (err) {
+                    console.error("Error initializing QuaggaJS:", err);
+                    return;
+                }
+                Quagga.start();
+                scannerStarted = true;
+            });
 
-        Quagga.onDetected((data) => {
-            const studentNumber = data.codeResult.code;
-            Quagga.stop();
-            processStudentID(studentNumber);
-        });
+            Quagga.onDetected((data) => {
+                const barcode = data.codeResult.code;
+                processBarcode(barcode);
+            });
+        }
     }
 
     // Event listener for clicking the "Start Scanning" button
     startScanButton.addEventListener("click", () => {
         initializeBarcodeScanner();
     });
+
+    // Function to process the scanned barcode
+    function processBarcode(barcode) {
+        if (acceptedOutputs.includes(barcode)) {
+            showPopup(`Barcode ${barcode} is Accepted`);
+        } else {
+            showPopup(`Barcode ${barcode} is Not Accepted`);
+        }
+
+        // Stop the scanner after processing
+        Quagga.stop();
+        scannerStarted = false;
+    }
 });
